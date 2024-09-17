@@ -1,3 +1,4 @@
+/* NavBar.jsx */
 #navbar{
   background: #bdbbbb;
   display: flex;
@@ -15,6 +16,99 @@
   
 }
 
+/*  Card.jsx */
+
+
+img{
+  height: 200px;
+  width: 200px;
+}
+
+#cards{
+  background: #f1f1f1;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 10px 20px;
+  gap: 20px;
+}
+
+#card{
+  background: white;
+  box-shadow: 2px 2px 2px 1px  #cecece;
+  padding: 10px;
+}
+
+#card:hover{
+  box-shadow: 2px 2px 10px 1px  #cecece;
+}
+
+#cartBtn{
+  background-color: #bdbbbb;
+  border: none;
+  font-size: 16px;
+  padding: 5px 40px;
+  border-radius: 5px;
+}
+
+#cartBtn:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 1px  #cecece;
+}
+
+/* Cart.jsx */
+
+table{
+  width: 100%;
+}
+
+.col2{
+  text-align: left;
+  padding: 20px
+}
+
+.col1{
+  height: 250px;
+  width: 250px;
+}
+
+.row{
+  width: max-content;
+}
+td{
+  box-shadow: 1px 1px 5px 1px  #cecece;
+  /* border: 1px solid black; */
+}
+
+/* Popup.jsx */
+.popup{
+  background-color: #bdbbbb;
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  height: 30px;
+  width: max-content;
+  right: 0;
+  border-radius: 2px;
+  box-shadow: 1px 1px 5px 1px  #cecece;
+}
+
+.close{
+  background-color: #bdbbbb;
+  border: none;
+  font-family: system-ui;
+  font-size: 20px;
+  font-weight: 100;
+  cursor: pointer;
+}
+
+#content{
+  font-family: serif;
+  margin: 0;
+  padding: 3px;
+  font-size: 16px;
+}
+
+/* Footer.jsx */
 #footer{
   background-color: #bdbbbb;
   padding: 100px;
@@ -22,6 +116,7 @@
   width: auto;
 }
 
+/* RegisterModal.jsx */
 .modal {
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -41,15 +136,6 @@
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
 }
-
-/* .modal{
-  border: 0px;
-  width: 25%;
-  height: 70%;
-  margin-top: 70px ;
-  position: fixed;
-  justify-content: center;
-} */
 
 .input{
   width: 70%;
