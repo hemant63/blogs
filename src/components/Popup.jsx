@@ -3,7 +3,6 @@ import React from 'react'
 export default function Popup({popup, setpopup, text}) {
     
     if(popup){
-        console.log("popup is true")
         setTimeout(()=>{
             setpopup(false)
         },3000)

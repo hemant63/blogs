@@ -4,12 +4,12 @@ import RegisterModal from './RegisterModal'
 
 export default function NavBar() {
 
-  const [productId,setProductId]=useState(JSON.parse(localStorage.getItem("productId")))
+  // const [productId,setProductId]=useState(JSON.parse(localStorage.getItem("productId")))
   const [modal, setModal] = useState(false)
   const registerDialog=()=>{
     setModal(true)
   }
-console.log(productId)
+// console.log(productId)
 // const closeModal=()=>{
 //   setModal(false)
 //   console.log("modal closred")
@@ -20,7 +20,7 @@ console.log(productId)
         <div id='navbar'>
             <NavLink to="/" className="navItem">Home</NavLink>
             <NavLink to="/about" className="navItem">Products</NavLink>
-            <NavLink to="/contact" className="navItem">Cart({productId.length})</NavLink>
+            <NavLink to="/contact" className="navItem">Cart</NavLink>
             <button onClick={registerDialog} className='navItem'>Register</button>
             {(modal)?<RegisterModal modal={modal} />:<></>}
     </div>
