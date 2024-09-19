@@ -4,7 +4,9 @@
   display: flex;
   justify-content: end;
   padding: 10px 30px;
-  position: sticky
+  position: sticky;
+  top: 0;
+  box-shadow: 0px 0px 2px 1px  #cecece;
 }
 
 .navItem{
@@ -17,32 +19,92 @@
 }
 
 /*  Card.jsx */
+.product_wrapper{
+  display: flex;
+}
 
+.sidebar{
+  padding: 17px;
+    text-align: left;
+    width: 30%;
+}
+
+.sidebar div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar form h4, h5{
+  margin: 10px 0px;
+}
+
+.sidebar form{
+  margin: 10px 0px;
+}
 
 img{
   height: 200px;
   width: 200px;
 }
 
-#cards{
+.searchField{
+  width: 90%;
+  height: 35px;
+  font-size: medium;
+  padding: 10px;
+  border: none;
+}
+
+#searchIcon{
+  height: 20px;
+  width: 20px;
+  padding: 8px 15px;
+  background-color: #bdbbbb;
+  cursor: pointer;
+}
+
+.search_form{
+  width: 40%;
+  margin-left: 345px;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 2px 2px 2px 1px  #cecece;
+}
+
+input[type=search]:focus{
+  outline: none;
+}
+
+button{
+  cursor: pointer;
+}
+
+.main_content{
+  padding-top: 10px;
   background: #f1f1f1;
+}
+
+#cards{
   display: grid;
   grid-template-columns: auto auto auto auto;
-  padding: 10px 20px;
+  padding: 20px 20px;
   gap: 20px;
 }
 
 #card{
   background: white;
   box-shadow: 2px 2px 2px 1px  #cecece;
-  padding: 10px;
+  padding: 10px 10px 40px 10px;
 }
+
 
 #card:hover{
   box-shadow: 2px 2px 10px 1px  #cecece;
 }
 
-#cartBtn{
+.cartBtn{
   background-color: #bdbbbb;
   border: none;
   font-size: 16px;
@@ -50,15 +112,36 @@ img{
   border-radius: 5px;
 }
 
-#cartBtn:hover {
+.cartBtn:hover {
   cursor: pointer;
   box-shadow: 1px 1px 5px 1px  #cecece;
 }
 
 /* Cart.jsx */
 
+.component_body{
+  background: #f1f1f1;
+  padding: 30px 0px;
+}
+
+.empty_page{
+  background-color: #fff;
+  background-color: #fff;
+  display: inline-block;
+  width: 80%;
+  height: 350px;
+  align-content: center;
+  box-shadow: 0px 0px 20px 0px  #cecece;
+}
+
+.empty_page p{
+  font-size: 20px;
+  font-family: system-ui;
+}
+
 table{
   width: 100%;
+  padding: 20px;
 }
 
 .col2{
@@ -114,6 +197,7 @@ td{
   padding: 100px;
   height: auto;
   width: auto;
+  position: sticky;
 }
 
 /* RegisterModal.jsx */
@@ -145,6 +229,7 @@ td{
 
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {

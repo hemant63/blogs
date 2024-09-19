@@ -3,8 +3,10 @@ import axios from 'axios'
 import Popup from '../components/Popup'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProduct } from '../redux_toolkit/cartSlice'
+import { useNavigate } from 'react-router-dom'
 
 export default function Contact() {
+  const navigate=useNavigate()
   const dispatch=useDispatch()
   const cart=useSelector((state)=>state?.cart?.products)
   const [products, setProducts]=useState()
@@ -22,7 +24,8 @@ export default function Contact() {
   
 
   return (
-    <div>
+    <div className='component_body'>
+      {(cart.length>0)?
       <table>
         <tbody>
         <Popup popup={popup} setpopup={setPopup} text={"Item Removed"}/>
@@ -47,7 +50,13 @@ export default function Contact() {
             }
           })}
         </tbody>
-      </table>
+      </table>:
+      <div className='empty_page'>
+        <h1>Cart is empty</h1>
+        <button className='cartBtn' onClick={()=>navigate("/about")}>shop</button>
+      </div>
+      }
+      
     </div>
   )
 }
