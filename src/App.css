@@ -26,13 +26,18 @@
 .sidebar{
   padding: 17px;
     text-align: left;
-    width: 30%;
+    min-width: 15%;
 }
 
-.sidebar div{
+.applied_filters{
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: left;
+  
+}
+
+.applied_filter{
+  background-color: #bdbbbb;
+  padding: 0px 0px;
 }
 
 .sidebar form h4, h5{
@@ -50,7 +55,7 @@ img{
 
 .searchField{
   width: 90%;
-  height: 35px;
+  height: 17px;
   font-size: medium;
   padding: 10px;
   border: none;
@@ -73,7 +78,7 @@ img{
   box-shadow: 2px 2px 2px 1px  #cecece;
 }
 
-input[type=search]:focus{
+input[type=input]:focus{
   outline: none;
 }
 
@@ -220,6 +225,29 @@ td{
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
 }
+
+/* Search modal */
+.search-modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 43%;
+  top: 23%;
+  width: 31.5%; /* Full width */
+  /* height: 100%; Full height */
+  /* background-color: rgb(0,0,0); Fallback color */
+  /* background-color: rgba(0,0,0,0); Black w/ opacity */
+}
+
+.search-modal-content {
+  background-color: #fefefe;
+  /* margin: 7% 43%; */
+  padding: 0px 10px;
+  border: 1px solid #ffffff;
+  width: 100%;
+  text-align: left;
+}
+
 
 .input{
   width: 70%;

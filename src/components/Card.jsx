@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 import Popup from "./Popup";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux_toolkit/cartSlice";
-import searchIcon from "../icon/magnifying-glass.png"
+import searchIcon from "../icon/magnifying-glass.png";
+import Search from "./Search";
 
 export default function Card() {
   const dispatch = useDispatch();
-  const [search,setSearch]=useState();
-  const [filter,setFilter]=useState({});
+  const [search, setSearch] = useState();
+  const [filter, setFilter] = useState({});
+  const [localProducts, setLocalProducts] = useState();
+  // const [filterProducts,setFilterproducts]=useState()
   const cart = useSelector((state) => state?.cart?.products);
   const [products, setProducts] = useState();
   const [popup, setPopup] = useState(false);
   const [text, setText] = useState("");
   const url = "https://fakestoreapi.com/products";
-
   const addToCart = (id) => {
     setPopup(true);
     if (!cart.includes(id)) {
@@ -26,31 +28,162 @@ export default function Card() {
     }
   };
 
-  useEffect(() => {
-    if(Object.keys(filter).length  == 0){
-      axios.get(url).then((resp) =>setProducts(resp.data));
-      console.log("filter is empty")
+  const filtercontent = () => {
+    if (Object.keys(filter).length == 0) {
+      try {
+        axios.get(url).then((resp) => setProducts(resp.data));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      if (filter?.category) {
+        axios
+          .get(`https://fakestoreapi.com/products/category/${filter?.category}`)
+          .then((resp) => {
+            setLocalProducts(resp.data);
+            if (filter?.price) {
+              const priceSort = [];
+              const price = filter?.price?.split("-");
+              console.log(localProducts);
+              // localProducts?.map((product) => {
+              //   if (product.price >= price[0] && product.price <= price[1]) {
+              //     priceSort.push(product);
+              //   }
+              // });
+              console.log(priceSort);
+              setProducts(priceSort);
+            } else {
+              setProducts(localProducts);
+            }
+          });
+      } 
+      // else {
+      //   axios.get(url).then((resp) => {
+      //     setLocalProducts(resp.data);
+      //     if (filter?.price) {
+      //       const price = filter?.price?.split("-");
+      //       const priceSort = [];
+      //       console.log(localProducts);
+      //       localProducts?.map((product) => {
+      //         if (product.price >= price[0] && product.price <= price[1]) {
+      //           priceSort.push(product);
+      //         }
+      //       });
+      //       console.log(priceSort);
+      //       setProducts(priceSort);
+      //     }
+      //   });
+      // }
     }
-  }, []);
+  };
 
-  const handleFilter=(event)=>{
-    const name = event.target.name
-    const value = event.target.value
-    setFilter(values=>({...values, [name]:value}))
-  }
+  // const productsChange = () => {
+  //   try {
+  //      axios.get(url).then((resp) => setLocalProducts(resp.data));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   if (Object.keys(filter).length !== 0) {
+  //     if (filter?.price) {
+  //       const price = filter?.price?.split("-");
+  //       const priceSort = [];
+  //       console.log(localProducts)
+  //       localProducts?.map((product) => {
+  //         if (product.price >= price[0] && product.price <= price[1]) {
+  //           priceSort.push(product);
+  //         }
+  //       });
+  //       console.log(priceSort)
+  //       setProducts(priceSort)
+  //     }
+  //   }
+  //   //  else {
+  //   //   try {
+  //   //     axios.get(url).then((resp) => setProducts(resp.data));
+  //   //   } catch (error) {
+  //   //     console.log(error);
+  //   //   }
+  //   // }
+  // };
 
-  const applyFilter=()=>{
-    console.log("filter clicked")
-    axios.get(`https://fakestoreapi.com/products/category/${filter?.category}`).then((resp) => setProducts(resp.data)
-      );
-  }
+  // useEffect(() => {
+  //   // productsChange()
+  //   filtercontent();
+  // }, [filter]);
+
+  // const filterProducts = useMemo(()=> productsChange(),[products  ])
+  // console.log(filterProducts)
+
+  useEffect(() => {
+    filtercontent();
+    // productsChange();
+  }, [filter]);
+
+  const handleFilter = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFilter((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleSearch = () => {
+    axios.get(url).then((resp) => {
+      var searchArr = [];
+      resp.data.map((product) => {
+        var category = product?.category?.toLowerCase();
+        var title = product?.title?.toLowerCase();
+        if (
+          category?.includes(search.toLowerCase()) ||
+          title?.includes(search.toLowerCase())
+        ) {
+          searchArr = [...searchArr, product];
+        }
+      });
+      setProducts(searchArr);
+    });
+  };
+
+  const handleSearchField = (searching) => {
+    setSearch(searching);
+    axios.get(url).then((resp) => {
+      var searchArr = [];
+      try {
+        resp.data?.map((product) => {
+          var category = product?.category?.toLowerCase();
+          var title = product?.title?.toLowerCase();
+          if (
+            category?.includes(searching.toLowerCase()) ||
+            title?.includes(searching.toLowerCase())
+          ) {
+            searchArr = [...searchArr, product];
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return searchArr;
+      // setProducts(searchArr)
+    });
+  };
 
   return (
     <div className="product_wrapper">
       <aside className="sidebar">
-        <div>
-          <h3>Filters</h3>
-          <button onClick={applyFilter}>Apply</button>
+        <h3>Filters</h3>
+        <div className="applied_filters">
+          {filter?.category ? (
+            <div className="applied_filter">
+              <p>{filter?.category}</p>
+            </div>
+          ) : (
+            <></>
+          )}
+          {filter?.price ? (
+            <div className="applied_filter">
+              <p>{filter?.price}</p>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
         <form>
           <h4>Price</h4>
@@ -59,15 +192,27 @@ export default function Card() {
             type="radio"
             id="lessthan50"
             name="price"
-            value="50"
+            value="0-50"
             onChange={handleFilter}
           />
           <label htmlFor="lessthan50">less than 50</label>
           <br />
-          <input type="radio" id="from51to100" name="price" value="51-100" onChange={handleFilter} />
+          <input
+            type="radio"
+            id="from51to100"
+            name="price"
+            value="51-100"
+            onChange={handleFilter}
+          />
           <label htmlFor="from51to100">from 51 to 100</label>
           <br />
-          <input type="radio" id="from101to200" name="price" value="101-200" onChange={handleFilter}/>
+          <input
+            type="radio"
+            id="from101to200"
+            name="price"
+            value="101-200"
+            onChange={handleFilter}
+          />
           <label htmlFor="from101to200">from 101 to 200</label>
           <br />
         </form>
@@ -113,9 +258,15 @@ export default function Card() {
       </aside>
       <div className="main_content">
         <form className="search_form">
-          <input className="searchField" type="search" onChange={(e)=>setSearch(e.target.value)} placeholder="Search" />
-          <img id="searchIcon" src={searchIcon} alt="" />
+          <input
+            className="searchField"
+            type="input"
+            onChange={(e) => handleSearchField(e.target.value)}
+            placeholder="Search"
+          />
+          <img id="searchIcon" onClick={handleSearch} src={searchIcon} alt="" />
         </form>
+        {search ? <Search handleSearchField={handleSearchField} /> : <></>}
         <div id="cards">
           <Popup popup={popup} setpopup={setPopup} text={text} />
           {products?.map((product) => {
