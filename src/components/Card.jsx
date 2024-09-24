@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Popup from "./Popup";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux_toolkit/cartSlice";
 import searchIcon from "../icon/magnifying-glass.png";
-import Search from "./Search";
+
 
 export default function Card() {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [filter, setFilter] = useState({});
-  const [localProducts, setLocalProducts] = useState();
-  // const [filterProducts,setFilterproducts]=useState()
   const cart = useSelector((state) => state?.cart?.products);
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState([]);
   const [popup, setPopup] = useState(false);
   const [text, setText] = useState("");
   const url = "https://fakestoreapi.com/products";
+
+  // Display pop up
   const addToCart = (id) => {
     setPopup(true);
     if (!cart.includes(id)) {
@@ -28,6 +28,14 @@ export default function Card() {
     }
   };
 
+  // Add key value in filter object
+  const handleFilter = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFilter((values) => ({ ...values, [name]: value }));
+  };
+
+  // Filtering products
   const filtercontent = () => {
     if (Object.keys(filter).length == 0) {
       try {
@@ -36,95 +44,51 @@ export default function Card() {
         console.log(error);
       }
     } else {
+      var localProducts=[]
       if (filter?.category) {
-        axios
-          .get(`https://fakestoreapi.com/products/category/${filter?.category}`)
+        axios.get(`https://fakestoreapi.com/products/category/${filter?.category}`)
           .then((resp) => {
-            setLocalProducts(resp.data);
+            localProducts=(resp.data);
             if (filter?.price) {
               const priceSort = [];
               const price = filter?.price?.split("-");
-              console.log(localProducts);
-              // localProducts?.map((product) => {
-              //   if (product.price >= price[0] && product.price <= price[1]) {
-              //     priceSort.push(product);
-              //   }
-              // });
+              localProducts?.map((product) => {
+                if (product.price >= price[0] && product.price <= price[1]) {
+                  priceSort.push(product);
+                }
+              });
               console.log(priceSort);
               setProducts(priceSort);
             } else {
               setProducts(localProducts);
+              console.log(localProducts)
             }
           });
       } 
-      // else {
-      //   axios.get(url).then((resp) => {
-      //     setLocalProducts(resp.data);
-      //     if (filter?.price) {
-      //       const price = filter?.price?.split("-");
-      //       const priceSort = [];
-      //       console.log(localProducts);
-      //       localProducts?.map((product) => {
-      //         if (product.price >= price[0] && product.price <= price[1]) {
-      //           priceSort.push(product);
-      //         }
-      //       });
-      //       console.log(priceSort);
-      //       setProducts(priceSort);
-      //     }
-      //   });
-      // }
+      else {
+        axios.get(url).then((resp) => {
+          localProducts=(resp.data);
+          if (filter?.price) {
+            const price = filter?.price?.split("-");
+            const priceSort = [];
+            localProducts?.map((product) => {
+              if (product.price >= price[0] && product.price <= price[1]) {
+                priceSort.push(product);
+              }
+            });
+            setProducts(priceSort);
+          }
+        });
+      }
     }
   };
 
-  // const productsChange = () => {
-  //   try {
-  //      axios.get(url).then((resp) => setLocalProducts(resp.data));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   if (Object.keys(filter).length !== 0) {
-  //     if (filter?.price) {
-  //       const price = filter?.price?.split("-");
-  //       const priceSort = [];
-  //       console.log(localProducts)
-  //       localProducts?.map((product) => {
-  //         if (product.price >= price[0] && product.price <= price[1]) {
-  //           priceSort.push(product);
-  //         }
-  //       });
-  //       console.log(priceSort)
-  //       setProducts(priceSort)
-  //     }
-  //   }
-  //   //  else {
-  //   //   try {
-  //   //     axios.get(url).then((resp) => setProducts(resp.data));
-  //   //   } catch (error) {
-  //   //     console.log(error);
-  //   //   }
-  //   // }
-  // };
-
-  // useEffect(() => {
-  //   // productsChange()
-  //   filtercontent();
-  // }, [filter]);
-
-  // const filterProducts = useMemo(()=> productsChange(),[products  ])
-  // console.log(filterProducts)
-
+  // Render page whenever any change occur in filter object
   useEffect(() => {
     filtercontent();
-    // productsChange();
   }, [filter]);
 
-  const handleFilter = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setFilter((values) => ({ ...values, [name]: value }));
-  };
-
+  // To apply searching
   const handleSearch = () => {
     axios.get(url).then((resp) => {
       var searchArr = [];
@@ -140,30 +104,19 @@ export default function Card() {
       });
       setProducts(searchArr);
     });
+  
   };
 
-  const handleSearchField = (searching) => {
-    setSearch(searching);
-    axios.get(url).then((resp) => {
-      var searchArr = [];
-      try {
-        resp.data?.map((product) => {
-          var category = product?.category?.toLowerCase();
-          var title = product?.title?.toLowerCase();
-          if (
-            category?.includes(searching.toLowerCase()) ||
-            title?.includes(searching.toLowerCase())
-          ) {
-            searchArr = [...searchArr, product];
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-      return searchArr;
-      // setProducts(searchArr)
-    });
-  };
+  // Debouncing for filter
+  useEffect(()=>{
+    const debounceTimer=setTimeout(() => {
+      handleSearch()
+    }, 1000);
+    return ()=>{
+      clearTimeout(debounceTimer)
+    }
+  },[search])
+
 
   return (
     <div className="product_wrapper">
@@ -261,12 +214,12 @@ export default function Card() {
           <input
             className="searchField"
             type="input"
-            onChange={(e) => handleSearchField(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
           />
-          <img id="searchIcon" onClick={handleSearch} src={searchIcon} alt="" />
+          <img id="searchIcon" src={searchIcon} alt="" />
         </form>
-        {search ? <Search handleSearchField={handleSearchField} /> : <></>}
+        {/* {search ? <Search search={search}/> : <></>} */}
         <div id="cards">
           <Popup popup={popup} setpopup={setPopup} text={text} />
           {products?.map((product) => {

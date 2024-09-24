@@ -70,8 +70,8 @@ img{
 }
 
 .search_form{
-  width: 40%;
-  margin-left: 345px;
+  max-width: 40%;
+  margin: auto;
   height: 35px;
   display: flex;
   justify-content: space-between;
@@ -89,6 +89,7 @@ button{
 .main_content{
   padding-top: 10px;
   background: #f1f1f1;
+  width: 100%;
 }
 
 #cards{
@@ -102,6 +103,7 @@ button{
   background: white;
   box-shadow: 2px 2px 2px 1px  #cecece;
   padding: 10px 10px 40px 10px;
+  width: 233px;
 }
 
 
@@ -228,21 +230,24 @@ td{
 
 /* Search modal */
 .search-modal {
-  display: block; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 43%;
-  top: 23%;
-  width: 31.5%; /* Full width */
+  display: flex; /* Hidden by default */
+  /* position: fixed; Stay in place */
+  
+  /* left: 43%; */
+  /* top: 23%; */
+  width: 40%; /* Full width */
+  margin: auto;
   /* height: 100%; Full height */
   /* background-color: rgb(0,0,0); Fallback color */
   /* background-color: rgba(0,0,0,0); Black w/ opacity */
 }
 
 .search-modal-content {
+  z-index: 1; /* Sit on top */
+  overflow-x: hidden;
   background-color: #fefefe;
   /* margin: 7% 43%; */
-  padding: 0px 10px;
+  /* padding: 0px 10px; */
   border: 1px solid #ffffff;
   width: 100%;
   text-align: left;

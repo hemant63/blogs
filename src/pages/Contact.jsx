@@ -9,7 +9,7 @@ export default function Contact() {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const cart=useSelector((state)=>state?.cart?.products)
-  const [products, setProducts]=useState()
+  const [products, setProducts]=useState([])
   const [popup, setPopup]=useState(false)
   const url="https://fakestoreapi.com/products"
   

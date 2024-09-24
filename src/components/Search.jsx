@@ -1,12 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-function Search({handleSearchField}) {
-    const [searchArr, setSearchArr] = useState(handleSearchField())
-    console.log(searchArr)
+function Search() {
   return (
     <div className='search-modal'>
         <div className='search-modal-content'>
-            
         </div>
     </div>
   )

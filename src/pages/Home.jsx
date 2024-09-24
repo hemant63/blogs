@@ -1,15 +1,7 @@
 import React from 'react'
-import axios from 'axios'
+
 
 export default function Home () {
-
-  const getData=async()=>{
-    var resp
-     resp = await axios.get("https://fakestoreapi.com/products").then(resp=>resp.data)
-    resp.map((val)=>console.log(val))
-  }
-
-  // getData()
 
   return (
     <div>
