@@ -6,6 +6,7 @@ import { addProduct } from "../redux_toolkit/cartSlice";
 import searchIcon from "../icon/magnifying-glass.png";
 
 
+
 export default function Card() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -219,8 +220,7 @@ export default function Card() {
           />
           <img id="searchIcon" src={searchIcon} alt="" />
         </form>
-        {/* {search ? <Search search={search}/> : <></>} */}
-        <div id="cards">
+        <div id="cards" >
           <Popup popup={popup} setpopup={setPopup} text={text} />
           {products?.map((product) => {
             return (

@@ -42,7 +42,7 @@ export default function Contact() {
                       </div>
                       <div className='price-btn'>
                       <p>₹{product?.price}</p>
-                      <button id='cartBtn' onClick={()=>updateCart(product?.id)}>Remove</button>
+                      <button className='cartBtn' onClick={()=>updateCart(product?.id)}>Remove</button>
                     </div>
                   </td>
                 </tr>
